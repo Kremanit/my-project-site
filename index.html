@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой сайт</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Подключеие CodeMirror -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+</head>
+<body>
+    <!-- Форма пароя для входа -->
+    <div id="password-overlay" class="password-overlay">
+        <div class="password-container">
+            <h2>Введите пароль</h2>
+            <input type="password" id="password-input" placeholder="Парол">
+            <button onclick="checkPassword()">Войти</button>
+        </div>
+    </div>
+
+    <!-- Форма пароля для загрузки -->
+    <div id="upload-password-overlay" class="password-overlay" style="display: none;">
+        <div class="password-container">
+            <h2>Пароль для загрузки</h2>
+            <input type="password" id="upload-password-input" placeholder="Пароль для загрузки">
+            <button onclick="checkUploadPassword()">Подтвердить</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="actions-row">
+                <button onclick="goBack()" id="back-button" title="Назад" style="display: none;">⬅</button>
+                <button onclick="refreshServerContent()" title="Обновить список">🔄</button>
+                <button onclick="toggleCreateFileInput()" title="Создать файл">✍️</button>
+                <button onclick="toggleCreateFolderInput()" title="оздать папку">📁</button>
+                <button onclick="logout()" title="Выод">🚪</button>
+            </div>
+            <div class="upload-section" id="upload-section" style="display: none;">
+                <label for="file-upload" class="custom-file-upload">📤 Выбрать файл</label>
+                <input type="file" id="file-upload" multiple style="display: none;">
+                <button onclick="uploadFiles()">Загрузить</button>
+            </div>
+            <button onclick="showUploadPasswordPrompt()" id="unlock-upload-btn">🔓 Разбокировать загрузку</button>
+            <div class="create-file">
+                <input type="text" id="new-file-name" placeholder="Имя файла (например, newfile.py)" style="display: none;">
+                <button onclick="createNewFile()" id="create-file-btn" style="display: none;">✔</button>
+            </div>
+            <div class="create-folder">
+                <input type="text" id="new-folder-name" placeholder="Имя папи" style="display: none;">
+                <button onclick="createNewFolder()" id="create-folder-btn" style="display: none;">✔</button>
+            </div>
+            <div class="items-container">
+                <ul class="server-list" id="server-list"></ul>
+            </div>
+            <div class="file-actions">
+                <button onclick="saveFile()" title="Схранить">💾</button>
+                <button onclick="clearEditor()" title="Очисить">🧹</button>
+            </div>
+            <div class="editor-container">
+                <textarea id="code-editor"></textarea>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="input-group">
+                <input type="text" id="session-id" placeholder="" autocomplete="new-password" inputmode="text" readonly onfocus="this.removeAttribute('readonly');">
+                <button onclick="connectToSession()">Подлючиться</button>
+            </div>
+            <div class="iframe-wrapper">
+                <div id="iframe-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/api/config.php?token=token"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
